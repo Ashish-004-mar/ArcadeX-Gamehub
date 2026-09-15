@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% set title='GameHub | Profile' %}
+{% block content %}
+<section class="auth-shell">
+  <div class="auth-card profile-card">
+    <span class="eyebrow">PLAYER PROFILE</span>
+    <h1>Your profile</h1>
+    <p class="muted">Update the details saved in this browser.</p>
+    <form id="profileForm">
+      <label>Full Name<input id="profileName" autocomplete="name"></label>
+      <label>Username<input id="profileUsername" disabled></label>
+      <label>Email<input id="profileEmail" disabled></label>
+      <button class="btn primary" type="submit">Save Profile</button>
+    </form>
+    <div class="danger-zone">
+      <div><span class="eyebrow danger-eyebrow">ACCOUNT</span><h2>Delete account</h2><p>This removes the account and all player data saved in this browser.</p></div>
+      <button id="deleteAccount" class="btn danger" type="button">Delete Account</button>
+    </div>
+    <p id="profileMessage" class="form-message"></p>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static',filename='js/profile.js') }}"></script>{% endblock %}

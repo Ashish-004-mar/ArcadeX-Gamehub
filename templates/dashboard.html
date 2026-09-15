@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% set title='GameHub | Dashboard' %}
+{% block content %}
+<section class="dashboard-page">
+  <div id="dashboardRoot"></div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static',filename='js/dashboard.js') }}"></script>{% endblock %}

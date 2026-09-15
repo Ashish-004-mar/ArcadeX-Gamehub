@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% set title='GameHub | Login' %}
+{% block content %}
+<section class="auth-shell">
+  <div class="auth-card auth-card-modern">
+    <div class="auth-brand"><img src="{{ url_for('static',filename='images/arcadex-logo.png') }}" alt="GameHub"></div>
+    <span class="eyebrow">WELCOME BACK</span>
+    <h1>Ready to play?</h1>
+    <p class="auth-intro">Log in to access your dashboard, favorites, recent games, and your personal GameHub experience.</p>
+    <form id="loginForm" method="post" action="{{ url_for('login') }}">
+      <label>Email<input id="loginEmail" type="email" placeholder="you@example.com" autocomplete="email" required></label>
+      <label>Password<input id="loginPassword" type="password" placeholder="Enter your password" autocomplete="current-password" required></label>
+      <button class="btn primary auth-submit">Log In to GameHub</button>
+    </form>
+    <p id="authMessage" class="form-message"></p>
+    <p class="muted auth-switch">New to GameHub? <a href="{{ url_for('register') }}">Create your free account</a></p>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static',filename='js/auth.js') }}"></script>{% endblock %}

@@ -1,0 +1,13 @@
+<article class="game-card">
+  <a class="game-thumb game-play-link" href="{{ url_for('games.play', game_slug=game.slug) }}" aria-label="Play {{ game.title }}">
+    <img src="{{ game.thumbnail_url or url_for('static',filename='images/arcadex-logo.png') }}" alt="{{ game.title }}" loading="lazy" onerror="this.onerror=null;this.src='{{ url_for('static',filename='images/arcadex-logo.png') }}';">
+    <span class="difficulty">{{ game.difficulty }}</span>
+    <span class="thumb-play">Play</span>
+  </a>
+  <div class="game-card-body">
+    <div class="game-meta"><span>{{ game.category_name }}</span><span>{{ game.play_count }} plays</span></div>
+    <h3>{{ game.title }}</h3>
+    <p>{{ game.description or 'Jump in and start playing.' }}</p>
+    <div class="card-actions"><a class="btn primary small game-play-link" href="{{ url_for('games.play',game_slug=game.slug) }}">Play Game</a><button type="button" class="icon-btn favorite-toggle" data-game-id="{{ game.id }}" aria-label="Toggle favorite">♡</button></div>
+  </div>
+</article>

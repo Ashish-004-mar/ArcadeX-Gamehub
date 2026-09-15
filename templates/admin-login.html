@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% set title='GameHub | Login' %}
+{% block content %}
+<section class="auth-shell"><div class="auth-card auth-card-modern"><div class="auth-brand"><img src="{{ url_for('static',filename='images/arcadex-logo.png') }}" alt="GameHub"></div><span class="eyebrow">GAMEHUB ACCOUNT</span><h1>Continue to GameHub</h1><p class="auth-intro">Please use the main Login page to continue.</p><a class="btn primary" href="{{ url_for('login') }}">Go to Login</a></div></section>
+{% endblock %}
