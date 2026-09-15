@@ -23,7 +23,7 @@
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": {{ url_for('games.games', _external=True)|tojson }} ~ "?q={search_term_string}"
+      "urlTemplate": {{ (url_for('games.games', _external=True) ~ '?q={search_term_string}')|tojson }}
     },
     "query-input": "required name=search_term_string"
   }
