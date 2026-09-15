@@ -2,9 +2,46 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{{ title|default('GameHub') }}</title>
+
+<title>{{ title|default('GameHub – Play Free Online Games') }}</title>
+<meta name="description"
+      content="{{ meta_description|default('Play free online games on GameHub. Discover action, racing, puzzle, sports, adventure, arcade and strategy games directly in your browser.') }}">
+
+<meta name="robots" content="index, follow">
+
+<meta name="author" content="GameHub">
+
+<link rel="canonical" href="{{ request.url }}">
+
+<meta property="og:title"
+      content="{{ title|default('GameHub – Play Free Online Games') }}">
+
+<meta property="og:description"
+      content="{{ meta_description|default('Discover and play free browser games across action, racing, puzzle, sports, adventure, arcade and strategy.') }}">
+
+<meta property="og:type" content="website">
+
+<meta property="og:url" content="{{ request.url }}">
+
+<meta property="og:site_name" content="GameHub">
+
+<meta property="og:image"
+      content="{{ url_for('static', filename='images/arcadex-logo.png', _external=True) }}">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:title"
+      content="{{ title|default('GameHub – Play Free Online Games') }}">
+
+<meta name="twitter:description"
+      content="{{ meta_description|default('Play free online browser games on GameHub.') }}">
+
+<meta name="twitter:image"
+      content="{{ url_for('static', filename='images/arcadex-logo.png', _external=True) }}">
+
 <link rel="icon" href="{{ url_for('static',filename='images/arcadex-logo.png') }}">
 <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+{% block head_extra %}{% endblock %}
 </head>
 <body data-admin-session="{{ '1' if current_admin else '0' }}">
 <header class="site-header">

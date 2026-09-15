@@ -1,5 +1,36 @@
 {% extends 'base.html' %}
-{% set title='GameHub | Play Free Online Games' %}
+
+{% set title = 'GameHub – Play Free Online Games' %}
+{% set meta_description = 'Play free online games on GameHub. Discover action, racing, puzzle, sports, adventure, arcade and strategy games and play directly in your browser.' %}
+
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GameHub",
+  "url": {{ request.url_root|tojson }},
+  "description": {{ meta_description|tojson }},
+  "publisher": {
+    "@type": "Organization",
+    "name": "GameHub",
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ url_for('static', filename='images/arcadex-logo.png', _external=True)|tojson }}
+    }
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": {{ url_for('games.games', _external=True)|tojson }} ~ "?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{% endblock %}
+
 {% block content %}
 {% if announcements %}<div class="announcement-bar" role="status" aria-label="Announcements"><div class="announcement-track" id="announcementTrack">{% for item in announcements %}<span>✦ {% if item.link_url %}<a href="{{ item.link_url }}" target="_blank" rel="noopener noreferrer">{{ item.message }}</a>{% else %}{{ item.message }}{% endif %}</span>{% endfor %}</div></div>{% endif %}
 <section class="home-hero"><div class="hero-copy"><div class="eyebrow">{{ settings.hero_eyebrow }}</div><h1>{{ settings.hero_title }}</h1><p>{{ settings.hero_description }}</p><div class="hero-actions"><a class="btn primary btn-lg" href="{{ url_for('games.games') }}">Explore Games</a><a class="btn btn-lg" href="{{ url_for('register') }}">Join GameHub</a></div></div><div class="hero-showcase"><div class="showcase-glow"></div><img src="{{ url_for('static',filename='images/arcadex-logo.png') }}" alt="GameHub" class="showcase-logo"><div class="showcase-caption"><span>GAMEHUB</span><strong>PLAY SOMETHING NEW</strong></div></div></section>

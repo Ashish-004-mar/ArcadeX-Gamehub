@@ -1,1 +1,66 @@
-{% extends 'base.html' %}{% set title='GameHub | ' ~ category.name %}{% block content %}<section class="section"><span class="eyebrow">CATEGORY</span><h1>{{ category.icon or '🎮' }} {{ category.name }}</h1><p class="muted">{{ category.description or '' }}</p><div class="game-grid">{% for game in games %}{% include '_game_card.html' %}{% else %}<p class="empty-state">No active games.</p>{% endfor %}</div></section>{% endblock %}{% block scripts %}<script src="{{ url_for('static',filename='js/games.js') }}"></script>{% endblock %}
+{% extends 'base.html' %}
+
+{% set title = 'Free ' ~ category.name ~ ' Games Online | GameHub' %}
+{% set meta_description = 'Play free ' ~ category.name|lower ~ ' games online on GameHub. Discover and play fun browser games in the ' ~ category.name|lower ~ ' category.' %}
+
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": {{ title|tojson }},
+  "description": {{ meta_description|tojson }},
+  "url": {{ request.base_url|tojson }},
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "GameHub",
+    "url": {{ request.url_root|tojson }}
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "GameHub",
+        "item": {{ request.url_root|tojson }}
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Games",
+        "item": {{ url_for('games.games', _external=True)|tojson }}
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": {{ category.name|tojson }},
+        "item": {{ request.base_url|tojson }}
+      }
+    ]
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <span class="eyebrow">CATEGORY</span>
+
+  <h1>{{ category.icon or '🎮' }} {{ category.name }}</h1>
+
+  <p class="muted">{{ category.description or '' }}</p>
+
+  <div class="game-grid">
+    {% for game in games %}
+      {% include '_game_card.html' %}
+    {% else %}
+      <p class="empty-state">No active games.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static',filename='js/games.js') }}"></script>
+{% endblock %}

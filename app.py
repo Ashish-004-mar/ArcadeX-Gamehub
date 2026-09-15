@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, request, jsonify, redirect, url_for
+from flask import Flask, render_template, session, request, jsonify, redirect, url_for, Response
 from config import Config
 from routes.games import games_bp
 from routes.admin import admin_bp
@@ -37,6 +37,66 @@ def index():
         categories = fetch_all("SELECT id,name,slug,description,icon FROM categories WHERE status='active' ORDER BY name LIMIT 7")
     announcements = fetch_all("SELECT * FROM announcements WHERE status='active' AND NOW() <= expires_at ORDER BY created_at DESC")
     return render_template('index.html', featured=featured, categories=categories, settings=settings, announcements=announcements)
+
+@app.get('/sitemap.xml')
+def sitemap():
+    base_url = request.url_root.rstrip('/')
+
+    urls = [
+        {
+            'loc': base_url + '/',
+            'changefreq': 'daily',
+            'priority': '1.0'
+        },
+        {
+            'loc': base_url + '/games',
+            'changefreq': 'daily',
+            'priority': '0.9'
+        }
+    ]
+
+    # Add active categories
+    categories = fetch_all(
+        "SELECT slug FROM categories WHERE status='active' ORDER BY name"
+    )
+
+    for category in categories:
+        urls.append({
+            'loc': base_url + '/games/' + category['slug'],
+            'changefreq': 'weekly',
+            'priority': '0.8'
+        })
+
+    # Add active games
+    games = fetch_all(
+        "SELECT slug, updated_at FROM games "
+        "WHERE status='active' ORDER BY created_at DESC"
+    )
+
+    for game in games:
+        urls.append({
+            'loc': base_url + '/play/' + game['slug'],
+            'changefreq': 'weekly',
+            'priority': '0.7'
+        })
+
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>']
+    xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+
+    for item in urls:
+        xml.append('  <url>')
+        xml.append(f"    <loc>{item['loc']}</loc>")
+        xml.append(f"    <changefreq>{item['changefreq']}</changefreq>")
+        xml.append(f"    <priority>{item['priority']}</priority>")
+        xml.append('  </url>')
+
+    xml.append('</urlset>')
+
+    return Response(
+        '\n'.join(xml),
+        mimetype='application/xml'
+    )
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # The normal login form is shared by regular browser-only users and the
@@ -67,6 +127,18 @@ def favorites(): return render_template('favorites.html')
 
 @app.errorhandler(404)
 def not_found(_): return render_template('404.html'), 404
+
+@app.route("/robots.txt")
+def robots_txt():
+    return """User-agent: *
+Allow: /
+
+Sitemap: https://arcadex-gamehub.onrender.com/sitemap.xml
+""", 200, {"Content-Type": "text/plain"}
+
+@app.route('/favicon.ico')
+def favicon():
+    return app.send_static_file('images/arcadex-logo.png')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
